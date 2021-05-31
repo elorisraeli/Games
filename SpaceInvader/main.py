@@ -54,15 +54,15 @@ bullet_state = "ready"
 
 # Score
 score_value = 0
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('caramelSweets.ttf', 32)
 textX = 10
 textY = 10
 
 # Game over
-over_font = pygame.font.Font('freesansbold.ttf', 64)
+over_font = pygame.font.Font('caramelSweets.ttf', 64)
 
 # Play again
-play_again_font = pygame.font.Font('freesansbold.ttf', 32)
+play_again_font = pygame.font.Font('caramelSweets.ttf', 32)
 
 
 def button_play_again():
