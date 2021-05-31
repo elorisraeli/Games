@@ -164,7 +164,7 @@ while running:
             for j in range(num_of_enemy):
                 enemyY[j] = 1000
             game_over_text()
-            # button_play_again()
+            button_play_again()
             break
 
         enemyX[i] += enemyX_change[i]
