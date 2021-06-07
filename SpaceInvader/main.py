@@ -71,8 +71,10 @@ def button_play_again():
 
 
 def game_over_text():
-    over_text = over_font.render("Game Over :(", True, white)
-    screen.blit(over_text, (200, 250))
+    over_text = over_font.render(f"Game Over :(", True, white)
+    over_score = over_font.render(f"You scored: {score_value}", True, white)
+    screen.blit(over_text, (200, 225))
+    screen.blit(over_score, (200, 310))
 
 
 def show_score(x, y):
@@ -94,10 +96,10 @@ def fire_bullet(x, y):
     screen.blit(bulletImg, (x, y))
 
 
-def isCollision(enemyX, enemyY, bulletX, bulletY):
-    distance = math.sqrt((math.pow((enemyX - bulletX), 2)) + (math.pow((enemyY - bulletY), 2)))
+def isCollision(aX, aY, bX, bY, pixels):
+    distance = math.sqrt((math.pow((aX - bX), 2)) + (math.pow((aY - bY), 2)))
     # if the distance under 27 pixels
-    if distance < 27:
+    if distance < pixels:
         return True
     else:
         return False
@@ -109,8 +111,8 @@ while running:
 
     screen.fill(white)
     screen.blit(background, (0, 0))
-    # Get mouse coordinates
-    mouse = pygame.mouse.get_pos()
+    # # Get mouse coordinates
+    # mouse = pygame.mouse.get_pos()
 
     # Events by keyboard clicks
     for event in pygame.event.get():
@@ -137,7 +139,8 @@ while running:
                     bullet_sound = mixer.Sound('laser.wav')
                     bullet_sound.play()
                     bulletX = playerX
-                    fire_bullet(playerX, bulletY)
+                    bulletY = playerY
+                    fire_bullet(bulletX, bulletY)
         if event.type == pygame.KEYUP:
             # Any key up (right or left or up or down)
             if (event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT or
@@ -160,7 +163,7 @@ while running:
     # Enemy Movement
     for i in range(num_of_enemy):
         # Game over
-        if enemyY[i] > 440:
+        if enemyY[i] > 440 or isCollision(enemyX[i], enemyY[i], playerX, playerY, 80):
             for j in range(num_of_enemy):
                 enemyY[j] = 1000
             game_over_text()
@@ -176,7 +179,7 @@ while running:
             enemyY[i] += enemyY_change[i]
 
         # Hitting the target
-        if isCollision(enemyX[i], enemyY[i], bulletX, bulletY):
+        if isCollision(enemyX[i], enemyY[i], bulletX, bulletY, 27):
             bulletY = 480
             bullet_state = "ready"
             score_value += 1
@@ -191,9 +194,10 @@ while running:
     if bullet_state == "fire":
         fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
-    if bulletY == 0:
+    # its must be '<=' and not only '==', because the bulletY_change dropped -5 each time
+    if bulletY <= 0:
         bullet_state = "ready"
-        bulletY = 480
+        bulletY = playerY
 
     # Call the player function to show him
     player(playerX, playerY)
