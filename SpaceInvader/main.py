@@ -1,7 +1,8 @@
-# Import and initialize the pygame library
+# Import and initialize libraries
 import pygame
 import random
 import math
+import button
 
 from pygame import mixer
 
@@ -35,14 +36,20 @@ enemyY = []
 enemyX_change = []
 enemyY_change = []
 num_of_enemy = 6
+
+
 # Using for loop to enter value, other option is
 # to enter to the array manual values (different)
-for i in range(num_of_enemy):
-    enemyImg.append(pygame.image.load('enemy.png'))
-    enemyX.append(random.randint(0, 735))
-    enemyY.append(random.randint(50, 150))
-    enemyX_change.append(3)
-    enemyY_change.append(30)
+def create_enemies():
+    for i in range(num_of_enemy):
+        enemyImg.append(pygame.image.load('enemy.png'))
+        enemyX.append(random.randint(0, 735))
+        enemyY.append(random.randint(50, 150))
+        enemyX_change.append(3)
+        enemyY_change.append(30)
+
+
+create_enemies()
 
 # Bullet
 bulletImg = pygame.image.load('bullet.png')
@@ -147,6 +154,12 @@ while running:
                     event.key == pygame.K_DOWN or event.key == pygame.K_UP):
                 playerX_change = 0
                 playerY_change = 0
+        # if clicked on play again
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            mouse = pygame.mouse.get_pos()
+            if mouse[0] in range(300, 300 + 160) and mouse[1] in range(400, 400 + 35):
+                print(" you press the text ")
+                score_value = 0
 
     # Check if player not out of range screen
     playerX += playerX_change
